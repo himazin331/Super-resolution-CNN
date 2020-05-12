@@ -59,8 +59,7 @@ class trainer(object):
     # PSNR(ピーク信号対雑音比)
     def psnr(self, h3, hr_imgs):
         
-        #return -10*K.log(K.mean(K.flatten((h3 - hr_imgs))**2))/np.log(10)
-        return -10*np.log10(K.mean(K.flatten((h3 - hr_imgs))**2))
+        return -10*K.log(K.mean(K.flatten((h3 - hr_imgs))**2))/np.log(10)
         
 # データセット作成
 def create_dataset(data_dir, h, w, mag):
@@ -164,7 +163,7 @@ def main():
         sys.exit()
     # 幅高さ、縮小倍率いずれかに0が入力された時->例外
     if args.he == 0 or args.wi == 0 or args.mag == 0:
-        print("\nInvalid value has been entered.\n")
+        print("\nException: Invalid value has been entered.\n")
         sys.exit()
 
     # 出力フォルダの作成(フォルダが存在する場合は作成しない)
