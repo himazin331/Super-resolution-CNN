@@ -67,7 +67,7 @@ def main():
         sys.exit()
     # 幅高さ、縮小倍率いずれかに0が入力された時->例外
     if args.he == 0 or args.wi == 0 or args.mag == 0:
-        print("\nInvalid value has been entered.\n")
+        print("\nException: Invalid value has been entered.\n")
         sys.exit()
 
     # 設定情報出力
