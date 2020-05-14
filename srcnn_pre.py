@@ -109,7 +109,8 @@ def main():
 
     # データ加工
     re = np.reshape(re, (args.he, args.wi, 3))
-    re *= 240 # 255だと出力異常になる
+    re *= 255
+    re = np.clip(re, 0.0, 255.0) # クリッピング(0~255に丸め込む)
 
     # 低解像度画像保存
     lr_img = Image.fromarray(np.uint8(lr_img_s))
