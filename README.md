@@ -14,7 +14,7 @@ python srcnn_tr.py -d <DATA_DIR> -c <EPOCH_NUM> -b <BATCH_SIZE>
                                 (-o <OUT_PATH> -he <HEIGHT> -wi <WIDTH> -m <MAG_SIZE>)
                                 
 EPOCH_NUM  : 3000 (Default)  
-BATCH_SIZE : 32 (Default)  A, B, Cってなに？
+BATCH_SIZE : 32 (Default)
 OUT_PATH   : ./srcnn.h5 (Default)  
 HEIGHT     : 256 (Default) *Input image size
 WIDTH      : 256 (Default) *Input image size
@@ -37,7 +37,15 @@ Like this!
         img_low = cv2.resize(img_low, (h, w))
 ```
 
+## srcnn_pre.py
 
-
-
-
+**Command**  
+```
+python srcnn_pre.py -p <PARAM_NAME> -d <IMG_DIR>
+                                (-o <OUT_PATH> -he <HEIGHT> -wi <WIDTH> -m <MAG_SIZE>)
+                                
+OUT_PATH   : ./result (Default)  
+HEIGHT     : 256 (Default) *Input image size
+WIDTH      : 256 (Default) *Input image size
+MAG_SIZE   : 2 (Default) *See below for details.
+```
