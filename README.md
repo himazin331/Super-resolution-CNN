@@ -21,7 +21,7 @@ WIDTH      : 256 (Default) *Input image size
 MAG_SIZE   : 2 (Default) *See below for details.
 ```
 
-**What are MAG_SIZE(-m)?**
+**What are MAG_SIZE(-m)?**  
 The program creates low-resolution images from high-resolution images.  
 Use `cv2.resize()` to resize the image to a smaller size and then restore it to its original size.  
 By doing so, you can produce a low-resolution image.  
