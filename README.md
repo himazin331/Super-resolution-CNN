@@ -31,6 +31,7 @@ Like this!
 ```
         # Resize the width and height of the image divided by MAG_SIZE
         img_low = cv2.resize(img, (int(h/mag), int(w/mag)))
+        
         # Resize to original size
         img_low = cv2.resize(img_low, (h, w))
 ```
