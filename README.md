@@ -10,7 +10,7 @@ ___
 
 **Command**  
 ```
-python srcnn_tr.py -d <DATA_DIR> -c <EPOCH_NUM> -b <BATCH_SIZE>
+python srcnn_tr.py -d <DATA_DIR> -e <EPOCH_NUM> -b <BATCH_SIZE>
                                 (-o <OUT_PATH> -he <HEIGHT> -wi <WIDTH> -m <MAG_SIZE>)
                                 
 EPOCH_NUM  : 3000 (Default)  
