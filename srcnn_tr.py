@@ -1,9 +1,3 @@
-import argparse as arg
-import os
-import sys
-
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' # TFメッセージ非表示
-
 import tensorflow as tf
 import tensorflow.keras.layers as kl
 from tensorflow.python.keras import backend as K
@@ -13,9 +7,15 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 
+import argparse as arg
+import os
+import sys
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # TFメッセージ非表示
+
+
 # SRCNN
 class SRCNN(tf.keras.Model):
-
     def __init__(self, h, w):
         super(SRCNN, self).__init__()
 
@@ -31,15 +31,15 @@ class SRCNN(tf.keras.Model):
 
         return h3
 
+
 # 学習
 class trainer(object):
-
     def __init__(self, h, w):
         
         self.model = SRCNN(h, w)
         
         self.model.compile(optimizer=tf.keras.optimizers.Adam(),
-                           loss=tf.keras.losses.MeanSquaredError(),
+                            loss=tf.keras.losses.MeanSquaredError(),
                             metrics=[self.psnr])
         
     def train(self, lr_imgs, hr_imgs, out_path, batch_size, epochs):
@@ -59,11 +59,11 @@ class trainer(object):
     # PSNR(ピーク信号対雑音比)
     def psnr(self, h3, hr_imgs):
         
-        return -10*K.log(K.mean(K.flatten((h3 - hr_imgs))**2))/np.log(10)
-        
+        return -10 * K.log(K.mean(K.flatten((h3 - hr_imgs))**2)) / np.log(10)
+
+
 # データセット作成
 def create_dataset(data_dir, h, w, mag):
-
     print("\n___Creating a dataset...")
     
     prc = ['/', '-', '\\', '|']
@@ -76,7 +76,6 @@ def create_dataset(data_dir, h, w, mag):
     hr_imgs = []
 
     for c in os.listdir(data_dir):
-
         d = os.path.join(data_dir, c)
 
         _, ext = os.path.splitext(c)
@@ -91,7 +90,7 @@ def create_dataset(data_dir, h, w, mag):
         img = cv2.resize(img, (h, w))
 
         # 低解像度画像
-        img_low = cv2.resize(img, (int(h/mag), int(w/mag)))
+        img_low = cv2.resize(img, (int(h / mag), int(w / mag)))
         img_low = cv2.resize(img_low, (h, w))
 
         lr_imgs.append(img_low)
@@ -99,7 +98,7 @@ def create_dataset(data_dir, h, w, mag):
 
         cnt += 1
 
-        print("\rLoading a LR-images and HR-images...{}    ({} / {})".format(prc[cnt%4], cnt, len(os.listdir(data_dir))), end='')
+        print("\rLoading a LR-images and HR-images...{}    ({} / {})".format(prc[cnt % 4], cnt, len(os.listdir(data_dir))), end='')
 
     print("\rLoading a LR-images and HR-images...Done    ({} / {})".format(cnt, len(os.listdir(data_dir))), end='')
 
@@ -108,14 +107,13 @@ def create_dataset(data_dir, h, w, mag):
     lr_imgs /= 255
     hr_imgs = tf.convert_to_tensor(hr_imgs, np.float32)
     hr_imgs /= 255
-    
-    print("\n___Successfully completed\n")
 
+    print("\n___Successfully completed\n")
     return lr_imgs, hr_imgs
+
 
 # PSNR, 損失値グラフ出力
 def graph_output(history):
-    
     # PSNRグラフ
     plt.plot(history.history['psnr'])
     plt.title('Model PSNR')
@@ -132,8 +130,8 @@ def graph_output(history):
     plt.legend(['Train'], loc='upper left')
     plt.show()
 
-def main():
 
+def main():
     # コマンドラインオプション作成
     parser = arg.ArgumentParser(description='Super-resolution CNN training')
     parser.add_argument('--data_dir', '-d', type=str, default=None,
@@ -146,19 +144,19 @@ def main():
     parser.add_argument('--epoch', '-e', type=int, default=3000,
                         help='学習回数の指定(デフォルト値=3000)')
     parser.add_argument('--he', '-he', type=int, default=256,
-                        help='リサイズの高さ指定(デフォルト値=256)')      
+                        help='リサイズの高さ指定(デフォルト値=256)')
     parser.add_argument('--wi', '-wi', type=int, default=256,
                         help='リサイズの指定(デフォルト値=256)')
     parser.add_argument('--mag', '-m', type=int, default=2,
-                        help='縮小倍率の指定(デフォルト値=2)')                           
+                        help='縮小倍率の指定(デフォルト値=2)')
     args = parser.parse_args()
 
     # 画像フォルダパス未指定->例外
-    if args.data_dir == None:
+    if args.data_dir is None:
         print("\nException: Folder not specified.\n")
         sys.exit()
     # 存在しない画像フォルダ指定時->例外
-    if os.path.exists(args.data_dir) != True:
+    if os.path.exists(args.data_dir) is False:
         print("\nException: Folder \"{}\" is not found.\n".format(args.data_dir))
         sys.exit()
     # 幅高さ、縮小倍率いずれかに0が入力された時->例外
@@ -184,7 +182,7 @@ def main():
 
     # データセット作成
     lr_imgs, hr_imgs = create_dataset(args.data_dir, args.he, args.wi, args.mag)
-    
+
     # 学習開始
     print("___Start training...")
     Trainer = trainer(args.he, args.wi)
@@ -193,7 +191,6 @@ def main():
     # PSNR, 損失値グラフ出力、保存
     graph_output(his)
 
+
 if __name__ == '__main__':
     main()
-
-
