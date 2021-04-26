@@ -24,7 +24,6 @@ class SRCNN(tf.keras.Model):
         self.conv3 = kl.Conv2D(3, 3, padding='same', activation='relu')
 
     def call(self, x):
-        
         h1 = self.conv1(x)
         h2 = self.conv2(h1)
         h3 = self.conv3(h2)
@@ -35,15 +34,13 @@ class SRCNN(tf.keras.Model):
 # 学習
 class trainer(object):
     def __init__(self, h, w):
-        
         self.model = SRCNN(h, w)
         
         self.model.compile(optimizer=tf.keras.optimizers.Adam(),
                             loss=tf.keras.losses.MeanSquaredError(),
                             metrics=[self.psnr])
-        
-    def train(self, lr_imgs, hr_imgs, out_path, batch_size, epochs):
 
+    def train(self, lr_imgs, hr_imgs, out_path, batch_size, epochs):
         # 学習
         his = self.model.fit(lr_imgs, hr_imgs, batch_size=batch_size, epochs=epochs)
 
@@ -58,7 +55,6 @@ class trainer(object):
 
     # PSNR(ピーク信号対雑音比)
     def psnr(self, h3, hr_imgs):
-        
         return -10 * K.log(K.mean(K.flatten((h3 - hr_imgs))**2)) / np.log(10)
 
 
