@@ -32,7 +32,6 @@ class SRCNN(tf.keras.Model):
 
 
 def main():
-    
     # コマンドラインオプション作成
     parser = arg.ArgumentParser(description='Super-resolution CNN prediction')
     parser.add_argument('--param', '-p', type=str, default=None,
