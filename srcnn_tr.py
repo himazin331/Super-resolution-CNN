@@ -83,11 +83,11 @@ def create_dataset(data_dir, h, w, mag):
         # 読込、リサイズ(高解像画像)
         img = cv2.imread(d)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        img = cv2.resize(img, (h, w))
+        img = cv2.resize(img, (w, h))
 
         # 低解像度画像
-        img_low = cv2.resize(img, (int(h / mag), int(w / mag)))
-        img_low = cv2.resize(img_low, (h, w))
+        img_low = cv2.resize(img, (int(w / mag), int(h / mag)))
+        img_low = cv2.resize(img_low, (w, h))
 
         lr_imgs.append(img_low)
         hr_imgs.append(img)

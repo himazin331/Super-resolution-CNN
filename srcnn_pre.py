@@ -91,11 +91,11 @@ def main():
     # 入力画像加工(高解像画像)
     img = cv2.imread(args.data_img)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    hr_img = cv2.resize(img, (args.he, args.wi))
+    hr_img = cv2.resize(img, (args.wi, args.he))
 
     # 低解像度画像作成
-    lr_img = cv2.resize(hr_img, (int(args.he / args.mag), int(args.wi / args.mag)))
-    lr_img = cv2.resize(lr_img, (args.he, args.wi))
+    lr_img = cv2.resize(hr_img, (int(args.wi / args.mag), int(args.he / args.mag)))
+    lr_img = cv2.resize(lr_img, (args.wi, args.he))
     lr_img_s = lr_img
 
     # 正規化
