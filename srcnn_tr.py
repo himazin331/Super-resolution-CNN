@@ -1,3 +1,4 @@
+from this import d
 from black import Any
 import tensorflow as tf
 import tensorflow.keras.layers as L
@@ -51,10 +52,11 @@ class trainer(object):
         out_path: str,
         batch_size: int,
         epochs: int,
-    ) -> tuple[Any, SRCNN]:  # ?[TypeHints] Any -> his: keras.callbacks.history
+    ) -> tuple[tf.keras.callbacks.history, SRCNN]:
         # 学習
-        # ?[TypeHints] his: keras.callbacks.history
-        his = self.model.fit(lr_imgs, hr_imgs, batch_size=batch_size, epochs=epochs)
+        his: tf.keras.callbacks.history = self.model.fit(
+            lr_imgs, hr_imgs, batch_size=batch_size, epochs=epochs
+        )
 
         print("___Training finished\n\n")
 
@@ -86,7 +88,7 @@ def create_dataset(
     hr_imgs: tf.Tensor = []
 
     for c in os.listdir(data_dir):
-        d: str = os.path.join(data_dir, c)
+        data_path: str = os.path.join(data_dir, c)
 
         ext: str
         _, ext = os.path.splitext(c)
@@ -96,7 +98,7 @@ def create_dataset(
             continue
 
         # 読込、リサイズ(高解像画像)
-        img: np.ndarray = cv2.imread(d)
+        img: np.ndarray = cv2.imread(data_path)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         img = cv2.resize(img, (w, h))
 
@@ -134,7 +136,7 @@ def create_dataset(
 
 
 # PSNR, 損失値グラフ出力
-def graph_output(history):  # ?[TypeHints] history: keras.callbacks.history
+def graph_output(history: tf.keras.callbacks.history):
     # PSNRグラフ
     plt.plot(history.history["_psnr"])
     plt.title("Model PSNR")
@@ -215,7 +217,7 @@ def main():
     print("___Start training...")
     Trainer = trainer(args.he, args.wi)
 
-    # ?[TypeHints] his: keras.callbacks.history
+    his: tf.keras.callbacks.history
     model: SRCNN
     his, model = Trainer.train(
         lr_imgs,
